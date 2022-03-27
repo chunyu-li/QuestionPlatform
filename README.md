@@ -10,6 +10,7 @@
 # 在项目root目录下
 $ pip install -r requirements.txt # 下载相关的Python依赖包
 $ flask run # 运行Flask项目
+$ python app.py # 你也可以通过这种方式运行该项目
 ```
 
 ## 项目技术栈
