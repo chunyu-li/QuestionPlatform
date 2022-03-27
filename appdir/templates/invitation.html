@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .card {
+            margin: 30px;
+        }
+
+        .info {
+            margin-left: 20px;
+        }
+
+        #my-div {
+            margin-top: 30px;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('.nav-item').removeClass('active');
+            $('#question-a').addClass('active');
+        })
+    </script>
+
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('questions',type='hot') }}">Hot</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('questions',type='new') }}">New</a>
+                </li>
+                <li class="nav-item">
+                    {% if username %}
+                        <a class="nav-link active" href="{{ url_for('questions',type='invitation') }}">Invitation</a>
+                    {% else %}
+                        <a class="nav-link disabled" href="#">Invitation</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Invitation questions</h5>
+            <p class="card-text">These are the questions that others invited you to answer.</p>
+            {% if questions | length == 0 %}
+                <p class="card-text" style="margin-top: 20px">No one has invited you to answer questions.</p>
+            {% endif %}
+            {% for question in questions %}
+                <div class="card text-left">
+                    <h5 class="card-header">
+                        <img src="../static/image/bootstrap-icon/person-fill.svg" width="25" height="25"
+                             class="d-inline-block align-middle"
+                             alt="" loading="lazy">
+                        <span class="align-middle">{{ question.username }}</span>
+                    </h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ question.title }}</h5>
+                        <p class="card-text">{{ question.description }}</p>
+                        <div id="my-div">
+                            <p class="card-text text-muted">{{ question.time }}</p>
+                            <a href="/question{{ question.id }}" class="btn btn-outline-primary">View answers</a>
+                            <span class="card-text info text-muted">{{ question.answers }} Answers</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

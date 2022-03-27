@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .card {
+            margin: 30px;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('.carousel').carousel({
+                interval: 5000
+            })
+        })
+    </script>
+    <main role="main">
+
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="jumbotron text-center">
+                        <div class="container">
+                            <h1 class="display-3">Welcome to Arino</h1>
+                            <p>Congratulations on discovering this treasure website.</p>
+                            <p><a class="btn btn-outline-primary btn-lg invisible" href="#" role="button">Start now
+                                &raquo;</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="jumbotron text-center">
+                        <div class="container">
+                            <h1 class="display-3">Rich content</h1>
+                            <p>This website is all-inclusive, you can find any answer you want.</p>
+                            <p><a class="btn btn-outline-primary btn-lg hide invisible" href="#" role="button">Start now
+                                &raquo;</a></p>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="jumbotron text-center">
+                        <div class="container">
+                            <h1 class="display-3">Beautiful UI</h1>
+                            <p>Humanized design and attractive appearance allow you to enjoy the process of learning
+                                knowledge.</p>
+                            <p><a class="btn btn-outline-primary btn-lg" href="{{ url_for('questions',type='hot') }}"
+                                  role="button">Start
+                                now &raquo;</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Ask questions</h2>
+                    <p>You can edit the title and content of your question and post it to the platform.
+                        There are many users waiting to give your answers.
+                        They can answer your questions and increase your knowledge base. Don't be shy, just ask!</p>
+                    <p><a class="btn btn-secondary" href="{{ url_for('questions',type='hot') }}" role="button">View
+                        details &raquo;</a></p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Write Answer</h2>
+                    <p>You can edit the content of your answer to particular question.
+                        The more answers you write, the more users will follow you.
+                        This is a good way to make yourself popular. Get ready to be a website star!</p>
+                    <p><a class="btn btn-secondary" href="{{ url_for('questions',type='hot') }}" role="button">View
+                        details &raquo;</a></p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Post your opinion</h2>
+                    <p>You can agree, disagree and like others' answers. Thus, more users can
+                        distinguish which answers are of high quality and which answers are just so so.
+                        Your valuable viewpoints will make our website better!</p>
+                    <p><a class="btn btn-secondary" href="{{ url_for('questions',type='hot') }}" role="button">View
+                        details &raquo;</a></p>
+                </div>
+            </div>
+
+            <hr>
+
+        </div> <!-- /container -->
+
+    </main>
+
+
+{% endblock %}

@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .card {
+            margin: 30px;
+        }
+
+        .info {
+            margin-left: 20px;
+        }
+
+        #my-div {
+            margin-top: 30px;
+        }
+
+        #my-div img {
+            margin-left: 60px;
+            cursor: pointer;
+        }
+
+        #answer-content {
+            height: 300px;
+        }
+
+        .answer-text:hover {
+            cursor: pointer;
+        }
+
+        .agree-btn {
+            width: 80px;
+        }
+
+        .disagree-btn {
+            width: 80px;
+        }
+
+        .follow-btn {
+            margin-left: 10px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $('.nav-item').removeClass('active');
+
+            $('.agree-btn').click(function () {
+                user_id ={{ user_id }};
+                answer_id = $(this).parent().children(':first').html();
+                $.post('/api/agree', {"user_id": user_id, "answer_id": answer_id})
+                    .done(function () {
+                        window.location.reload();
+                    })
+                    .fail(function () {
+                        myAlert("Something wrong with network connection!");
+                    });
+            });
+
+            $('.disagree-btn').click(function () {
+                user_id ={{ user_id }};
+                answer_id = $(this).parent().children(':first').html();
+                $.post('/api/disagree', {"user_id": user_id, "answer_id": answer_id})
+                    .done(function () {
+                        window.location.reload();
+                    })
+                    .fail(function () {
+                        myAlert("Something wrong with network connection!");
+                    });
+            });
+
+            $('.heart').click(function () {
+                user_id ={{ user_id }};
+                answer_id = $(this).parent().children(':first').html();
+                $.post('/api/heart', {"user_id": user_id, "answer_id": answer_id})
+                    .done(function () {
+                        window.location.reload();
+                    })
+                    .fail(function () {
+                        myAlert("Something wrong with network connection!");
+                    });
+            });
+
+            $('.follow-btn').click(function () {
+                user_id ={{ user_id }};
+                followed_name = $(this).parent().children().eq(1).html();
+                $.post('/api/follow', {"user_id": user_id, "followed_name": followed_name})
+                    .done(function () {
+                        window.location.reload();
+                    })
+                    .fail(function () {
+                        myAlert("Something wrong with network connection!");
+                    });
+            });
+
+            $('.submit-comment').click(function () {
+                comment = $(this).parent().children('.comment-text').val();
+                if (comment == "") {
+                    myAlert("The comment should not be empty!");
+                    return;
+                }
+                user_id ={{ user_id }};
+                answer_id = $(this).parent().children(':first').html();
+                $.post('/api/comment', {"user_id": user_id, "answer_id": answer_id, "comment": comment})
+                    .done(function () {
+                        window.location.reload();
+                    })
+                    .fail(function () {
+                        myAlert("Something wrong with network connection!");
+                    });
+            });
+
+            $('.answer-text').click(function () {
+                let question_id = $(this).parent().children().eq(1).html();
+                urlFor('/question' + question_id);
+            })
+
+        })
+    </script>
+
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('follow') }}">Follow</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url_for('favorites') }}">Favorites</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Favorite answers</h5>
+            <p class="card-text">These are your favorite answers.</p>
+            {% for answer in answers %}
+                <div class="card text-left">
+                    <h5 class="card-header">
+                        <img src="../static/image/bootstrap-icon/person-fill.svg" width="25" height="25"
+                             class="d-inline-block align-middle"
+                             alt="" loading="lazy">
+                        <span class="align-middle">{{ answer.username }}</span>
+                        {% if answer.followed %}
+                            <button type="button" class="btn btn-primary align-middle follow-btn">Followed</button>
+                        {% else %}
+                            <button type="button" class="btn btn-outline-primary align-middle follow-btn">Follow
+                            </button>
+                        {% endif %}
+                    </h5>
+                    <div class="card-body">
+                        <p class="card-text answer-text">{{ answer.content }}</p>
+                        <p class="card-text" style="display: none">{{ answer.question_id }}</p>
+                        <div id="my-div">
+                            <span style="display: none">{{ answer.id }}</span>
+                            <p class="card-text text-muted">{{ answer.time }}</p>
+                            <button type="button" class="btn btn-outline-primary agree-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-caret-up" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M3.204 11L8 5.519 12.796 11H3.204zm-.753-.659l4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
+                                </svg>
+                                {{ answer.agree }}
+                            </button>
+                            <button type="button" class="btn btn-outline-danger disagree-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-caret-down" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M3.204 5L8 10.481 12.796 5H3.204zm-.753.659l4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                                </svg>
+                                {{ answer.disagree }}
+                            </button>
+                            <img src="../static/image/bootstrap-icon/chat-square.svg" width="20" height="20"
+                                 class="d-inline-block align-middle" data-toggle="collapse"
+                                 data-target="#multiCollapse{{ loop.index }}" aria-expanded="false"
+                                 aria-controls="multiCollapse{{ loop.index }}"
+                                 alt="" loading="lazy">
+                            <img src="../static/image/bootstrap-icon/share.svg" width="20" height="20"
+                                 class="d-inline-block align-middle"
+                                 alt="" loading="lazy">
+                            {% if answer.like %}
+                                <img src="../static/image/bootstrap-icon/heart-fill.svg" width="20"
+                                     height="20"
+                                     class="d-inline-block align-middle heart"
+                                     alt="" loading="lazy">
+                            {% else %}
+                                <img src="../static/image/bootstrap-icon/heart.svg" width="20" height="20"
+                                     class="d-inline-block align-middle heart"
+                                     alt="" loading="lazy">
+                            {% endif %}
+
+
+                            <div class="collapse multi-collapse" id="multiCollapse{{ loop.index }}">
+                                <div class="card">
+                                    <h5 class="card-header">
+                                        <span class="align-middle">{{ answer.comments | length }} comment</span>
+                                    </h5>
+                                    <div class="card-body">
+                                        {% for comment in answer.comments %}
+                                            <div>
+                                                <img src="../static/image/bootstrap-icon/person-fill.svg" width="20"
+                                                     height="20"
+                                                     class="d-inline-block align-middle"
+                                                     alt="" loading="lazy" style="margin-left: 0px">
+                                                <span class="align-middle"
+                                                      style="font-weight: bold">{{ comment.username }}</span>
+                                            </div>
+
+                                            <p class="card-text" style="margin-top: 20px">{{ comment.content }}</p>
+                                            <hr>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="container">
+                                            <div class="row">
+                                                <span style="display: none">{{ answer.id }}</span>
+                                                <input type="text" class="form-control col-10 comment-text"
+                                                       placeholder="Write your comment...">
+                                                <span class="col-1"> </span>
+                                                <button class="btn form-control col-1 btn-outline-primary submit-comment">
+                                                    Post
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

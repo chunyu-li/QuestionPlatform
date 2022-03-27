@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .card {
+            margin: 30px auto 30px auto;
+        }
+
+        #submit {
+            margin: 0 auto;
+        }
+
+    </style>
+
+    <div class="card w-25">
+        <h5 class="card-header text-center">Register</h5>
+        <div class="card-body">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label>Username</label>
+                        {% if form.errors %}
+                            {% if form.username.errors %}
+                                {{ form.username(class="form-control is-invalid") }}
+                            {% else %}
+                                {{ form.username(class="form-control is-valid") }}
+                            {% endif %}
+                        {% else %}
+                            {{ form.username }}
+                        {% endif %}
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label>Email</label>
+                        {% if form.errors %}
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control is-invalid") }}
+                            {% else %}
+                                {{ form.email(class="form-control is-valid") }}
+                            {% endif %}
+                        {% else %}
+                            {{ form.email }}
+                        {% endif %}
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label>Password</label>
+                        {% if form.errors %}
+                            {% if form.password.errors %}
+                                {{ form.password(class="form-control is-invalid") }}
+                            {% else %}
+                                {{ form.password(class="form-control is-valid") }}
+                            {% endif %}
+                        {% else %}
+                            {{ form.password }}
+                        {% endif %}
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label>Confirm Password</label>
+                        {% if form.errors %}
+                            {% if form.repassword.errors %}
+                                {{ form.repassword(class="form-control is-invalid") }}
+                            {% else %}
+                                {{ form.repassword(class="form-control is-valid") }}
+                            {% endif %}
+                        {% else %}
+                            {{ form.repassword }}
+                        {% endif %}
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            {% for error in form.repassword.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row text-center">
+                    {{ form.submit }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

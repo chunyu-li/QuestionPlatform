@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>Arino - Q&A platform</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="icon" href="../static/image/bootstrap-icon/question-circle.svg">
+    <style>
+        #search {
+            margin-left: 30px;
+        }
+
+        .alert-margin {
+            margin-right: 40px;
+            margin-top: 10px;
+        }
+
+        .absolute-center {
+            position: absolute;
+            position: fixed;
+            right: 0;
+            left: 0;
+            margin: auto;
+        }
+
+        #submit-question {
+            margin: 0 auto;
+        }
+
+        #question-des {
+            height: 200px;
+        }
+
+        #beian:link {
+            color: #8a8a8a;
+        }
+
+        #beian:visited {
+            color: #8a8a8a;
+        }
+
+        #beian:hover {
+            color: #1E90FF;
+        }
+
+        #beian {
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        label:hover{
+            cursor: text;
+        }
+
+    </style>
+    <script>
+
+        function changeState(s1, s2) {
+            if (s1 == "" || s2 == "") {
+                $('#submit-question').attr('disabled', 'disabled');
+            } else {
+                $('#submit-question').attr('disabled', false);
+            }
+        }
+
+        function urlFor(path) {
+            let curentPath = window.document.location.href;
+            let pathName = window.document.location.pathname;
+            let posistion = curentPath.indexOf(pathName);
+            let localhostPath = curentPath.substring(0, posistion);
+            window.location.href = localhostPath + path;
+        }
+
+        function myAlert(str) {
+            $('.toast-body').html(str);
+            $('.toast').toast('show');
+        }
+
+        $(document).ready(function () {
+
+            $('#platform').click(function () {
+                urlFor('/');
+            });
+
+            $('.navbar-nav li').find('a').each(function () {
+                if (this.href == document.location.href || document.location.href.search(this.href) >= 0) {
+                    $(this).parent().siblings('li').removeClass('active');
+                    $(this).parent().addClass('active');
+                }
+            });
+            $('[data-toggle="popover"]').popover()
+            let questionTitle = "";
+            let questionDes = "";
+            changeState(questionTitle, questionDes);
+
+            $("#question-title").on("input propertychange", function () {
+                var str = $(this).val();
+                questionTitle = str;
+                changeState(questionTitle, questionDes);
+            });
+            $("#question-des").on("input propertychange", function () {
+                var str = $(this).val();
+                questionDes = str;
+                changeState(questionTitle, questionDes);
+            });
+        })
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand text-primary" href="{{ url_for('root') }}">
+        <img src="../static/image/bootstrap-icon/question-circle.svg" width="30" height="30"
+             class="d-inline-block align-top"
+             alt="" loading="lazy">
+        Arino
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('root') }}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item" id="question-a">
+                <a class="nav-link" href="{{ url_for('questions',type='hot') }}">Questions</a>
+            </li>
+        </ul>
+        <div class="form-inline my-2 my-lg-0 navbar-collapse" id="search">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            {#            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>#}
+            <button class="btn btn-outline-primary my-2 my-sm-0"
+                    onclick="myAlert('Due to limited time, the search function has not been completed')">Search
+            </button>
+        </div>
+
+        {% if username %}
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModal">
+                Ask questions
+            </button>
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit your question</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="outline: none">&times;
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="post" novalidate>
+                                {{ question_form.hidden_tag() }}
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label>Title</label>
+                                        {{ question_form.title }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label>Description</label>
+                                        {{ question_form.description }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3 text-center">
+                                        {{ question_form.submit }}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <button type="button" class="btn btn-outline-primary" data-container="body"
+                    data-toggle="popover"
+                    data-placement="bottom" title="Alert"
+                    data-content="Before asking questions, you should first login">
+                Ask questions
+            </button>
+        {% endif %}
+
+        <div class="nav-item dropdown">
+            <a class="align-middle nav-link dropdown-toggle text-muted" href="#" id="navbarDropdown" role="button"
+               data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <img src="../static/image/bootstrap-icon/person-fill.svg" width="25" height="25"
+                     class="d-inline-block align-middle"
+                     alt="" loading="lazy">
+            </a>
+
+            {% if username %}
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <h6 class="dropdown-header">Logged in as {{ username }}</h6>
+                    <a class="dropdown-item" href="{{ url_for('follow') }}">Follow</a>
+                    <a class="dropdown-item" href="{{ url_for('favorites') }}">Favorites</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for('index') }}">Log out</a>
+                </div>
+            {% else %}
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ url_for('login') }}">Login</a>
+                    <a class="dropdown-item" href="{{ url_for('register') }}">Register</a>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul>
+            {% for category,message in messages %}
+                {% if category=="success" %}
+                    <div class="absolute-center alert alert-primary alert-dismissible fade show alert-margin"
+                         role="alert" style="z-index: 9999">
+                        <strong>All goes well &nbsp;</strong>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                                style="outline: none">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="absolute-center alert alert-danger alert-dismissible fade show alert-margin"
+                         role="alert" style="z-index: 9999">
+                        <strong>There's a problem &nbsp;</strong>{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                                style="outline: none">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<div class="toast absolute-center" data-delay="10000" style="z-index: 9999;min-height:90px">
+    <div class="toast-header">
+        <img src="../static/image/bootstrap-icon/exclamation-circle-fill.svg" class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Alert</strong>
+        {#        <small>close</small>#}
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" style="outline: none">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Hello, world!
+    </div>
+</div>
+
+{% block content %}{% endblock %}
+
+<div class="text-center" style="margin-top: 200px">
+    <label style="font-size: 12px;color: red">本网站仅供个人学习, 不涉及任何商业利益!</label><br>
+    <label style="font-size: 12px;color: #8a8a8a">互联网ICP备案: </label>
+    <a href="https://beian.miit.gov.cn/" id="beian" target="_blank">京ICP备2020043107号</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+flask
+altgraph
+click
+Flask-SQLAlchemy
+Flask-WTF
+itsdangerous
+Jinja2
+macholib
+MarkupSafe
+pip
+setuptools
+SQLAlchemy
+Werkzeug
+WTForms
+pyOpenSSL
