@@ -1,4 +1,11 @@
-/flaskenv/
-/__pycache__/
+# Python cache files
+__pycache__/
+
+# PyCharm files
+.idea/
+
+# macOS dir files
 .DS_Store
-/.idea/
+
+# Don't upload flask virtual environment
+/flaskenv/
