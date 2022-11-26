@@ -1,10 +1,10 @@
-## 问答平台 - Question Platform
+# 问答平台 - Question Platform
 
-### 项目介绍
+## 项目介绍
 
-这是一个基于Flask框架+Jinja2模版引擎+Bootstrap的网页问答平台，类似知乎和Quora
+这是一个基于Flask框架+Jinja2模版引擎+Bootstrap的网页问答平台，类似**知乎**和 **Quora**
 
-### Quick Start
+## Get started
 
 ```shell
 # 在命令行界面，首先cd到主目录下，然后使用该命令下载相关的Python依赖包
@@ -14,7 +14,9 @@ pip install -r requirements.txt
 flask run
 ```
 
-### 项目技术栈
+然后在 http://127.0.0.1:5000 访问本地 web 程序。
+
+## 项目技术栈
 
 | 技术       | 说明           |
 | ---------- | -------------- |
@@ -25,7 +27,7 @@ flask run
 | WTForms    | 表单验证       |
 | Jinja2     | 模版引擎       |
 
-### 主要功能
+## 主要功能
 
 * 基本用户功能:
    * 登陆
@@ -52,7 +54,7 @@ flask run
    * 查看你关注的人的回答
    
 
-### 项目效果图
+## 项目效果图
 
 ![index](docs/images/index.png)
 

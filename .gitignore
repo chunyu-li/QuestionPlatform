@@ -9,3 +9,5 @@ __pycache__/
 
 # Don't upload flask virtual environment
 /flaskenv/
+
+*.pyc
